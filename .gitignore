@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local runtime data: logs (contain visited hosts), check results, settings, users
+data/
+
+# Your proxy lists - keep them out of the repo
+proxys/*
+!proxys/.gitkeep
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
