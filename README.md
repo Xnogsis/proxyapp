@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.png" alt="proxytui" width="720"></p>
+
 # proxytui
 
 A simple terminal app for Windows that lets you load lists of SOCKS5 proxies, test them, and route your traffic through the one you pick, with safety checks built in.
@@ -117,6 +119,7 @@ The app refuses to route through MITM or LEAK proxies.
 | `data\` | Logs, saved check results, system-proxy backup (ignored by git) |
 | `proxyapp\` | Shared modules: list parsing, SOCKS5 protocol, checker. It also contains an older command-line pool manager (`python -m proxyapp --help`). |
 | `test_tui.py`, `selftest.py` | Tests |
+| `assets\` | Logo and icon. Regenerate with `python assets\make_logo.py` (needs `pip install matplotlib`; the app itself doesn't need it) |
 
 ## Tests
 
