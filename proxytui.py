@@ -211,6 +211,11 @@ def geo_lookup(ips: list[str]) -> dict[str, str]:
     return out
 
 
+async def _to_thread(fn, *args):
+    # to_thread is 3.9+; this runs on 3.8.
+    return await asyncio.get_running_loop().run_in_executor(None, fn, *args)
+
+
 def _ago(ts: float | None) -> str:
     if not ts:
         return "?"
@@ -676,7 +681,7 @@ class App:
         if not ips:
             return
         try:
-            self._geo_cache.update(await asyncio.to_thread(geo_lookup, ips))
+            self._geo_cache.update(await _to_thread(geo_lookup, ips))
         except Exception as e:  # noqa: BLE001 - geo is best-effort
             self.log.warn(f"geo lookup failed: {e}")
         for p in self.proxies:
@@ -699,7 +704,7 @@ class App:
 
     async def _net_monitor(self):
         while True:
-            ok = await asyncio.to_thread(internet_ok)
+            ok = await _to_thread(internet_ok)
             if ok != self.online:
                 self.online = ok
                 self.log.write("INFO" if ok else "WARN",
@@ -707,7 +712,7 @@ class App:
             await asyncio.sleep(10)
 
     async def _check_online(self) -> bool:
-        ok = await asyncio.to_thread(internet_ok)
+        ok = await _to_thread(internet_ok)
         if ok != self.online:
             self.online = ok
             self.log.write("INFO" if ok else "WARN",
@@ -834,7 +839,7 @@ class App:
             except Exception:  # noqa: BLE001
                 pass
             return None
-        self._real_ip = await asyncio.to_thread(fetch)
+        self._real_ip = await _to_thread(fetch)
         return self._real_ip
 
     async def _sample(self, p: Proxy, host: str, port: int, timeout=6.0) -> float:

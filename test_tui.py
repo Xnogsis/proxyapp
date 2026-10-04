@@ -336,7 +336,7 @@ def test_failover():
                     r, w, rep = await client_connect(port)
                     check("no upstream refused", rep == socks.REP_NET_UNREACHABLE)
                     w.close()
-                    await asyncio.to_thread(wait_for, lambda: not app.sys.active, 2)
+                    await proxytui._to_thread(wait_for, lambda: not app.sys.active, 2)
                     check("no upstream: auto-restored",
                           len(WRITES) > n0 and app.sys.active is False)
 
@@ -540,9 +540,10 @@ def test_protocols():
                             else:
                                 args += [flag[0], f"127.0.0.1:{port}"]
                             args.append(f"http://127.0.0.1:{origin_port}/curl")
-                            res = await asyncio.to_thread(
-                                subprocess.run, args, capture_output=True,
-                                text=True, timeout=20)
+                            res = await proxytui._to_thread(
+                                lambda: subprocess.run(
+                                    args, capture_output=True,
+                                    text=True, timeout=20))
                             name = " ".join(flag)
                             check(f"curl {name}",
                                   res.returncode == 0 and

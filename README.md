@@ -32,7 +32,7 @@ proxytui  ROUTING via 123.58.219.171:10808  | local 127.0.0.1:1080 | system prox
 ## Requirements
 
 - Windows 10 or 11
-- Python 3.10 or newer (tested on 3.14). It uses only the standard library, so there's nothing to `pip install`.
+- Python 3.8 or newer (tested on 3.14). It uses only the standard library, so there's nothing to `pip install`.
 
 ## Quick start
 
